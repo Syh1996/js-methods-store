@@ -25,7 +25,7 @@ export const debound = (() => {
     let timer = null;
     return (func, timeout = 300) => {
         if (typeof func !== "function") {
-            throw(`${func}应该是一个函数`);
+            throw (`${func}应该是一个函数`);
         };
         if (timer) {
             clearInterval(timer);
@@ -44,7 +44,7 @@ export const throttle = (() => {
     let isLoad = false;
     return (func, timeout = 1000) => {
         if (typeof func !== "function") {
-            throw(`${func}应该是一个函数`);
+            throw (`${func}应该是一个函数`);
         };
         if (isLoad) {
             return;
@@ -57,3 +57,27 @@ export const throttle = (() => {
     }
 })();
 
+
+/**
+ * 图片转base64
+ */
+export const imgToBase64 = file => {
+    if (!file) {
+        throw ('请选择图片')
+    }
+    const { name } = file;
+    const extIndex = name.lastIndexOf('.');
+    const extName = name.substring(extIndex + 1);
+    const exts = ['jpg', 'png', 'gif', 'jpeg', 'bmp'];
+    if (exts.includes(extName.toLowerCase())) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function () {
+                resolve(this.result);
+            }
+        });
+    } else {
+        throw ('file不是图片')
+    }
+}

@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve --env development",
-    "build:dev": "webpack --config webpack.config.js --env development --progress --watch",
+    "build:dev": "webpack --config webpack.config.js --env development --progress",
     "build:prod": "webpack --config webpack.config.js --env production --progress "
   },
   "keywords": [
@@ -17,12 +17,13 @@
   "dependencies": {
     "axios": "^0.27.2",
     "webpack": "^5.73.0",
-    "webpack-cli": "^4.10.0"
+    "webpack-cli": "^4.10.0",
+    "webpack-merge": "^5.8.0"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/Syh1996/js-methods-store.git"
-  },  
+  },
   "devDependencies": {
     "css-loader": "^6.7.1",
     "html-webpack-plugin": "^5.5.0",

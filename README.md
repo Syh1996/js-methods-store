@@ -1,5 +1,10 @@
 ## 说明 
+### 重要提示
+
+方法集成仍在开发中，已有功能不受影响，后续将持续扩展其它功能
+
 ### 安装
+
 ``````
 npm i js-methods-store
 ``````
@@ -7,7 +12,7 @@ npm i js-methods-store
 ### 使用
 
 ``````js
-import * as jsStore2 from 'js-methods-store'; //推荐  功能增多时，将不再使用方法1
+import * as jsStore from 'js-methods-store'; //推荐
 ``````
 
 
@@ -18,17 +23,18 @@ import * as jsStore2 from 'js-methods-store'; //推荐  功能增多时，将不
 
 #### 数据处理类
 
-| 方法名              | 用途                          | 用法                                             |
-| ------------------- | ----------------------------- | ------------------------------------------------ |
-| deleteFullJsonArray | 对数组去重，主要针对jsonArray | deleteFullJsonArray([{},{},{}]),返回去重后的数据 |
-| debound             | 防抖函数                      | debound(事件方法，防抖时长默认300ms)             |
-| throttle            | 节流函数                      | throttle(事件方法，节流时长默认1000ms)           |
+| 方法名              | 用途                          | 用法                                                         |
+| ------------------- | ----------------------------- | ------------------------------------------------------------ |
+| deleteFullJsonArray | 对数组去重，主要针对jsonArray | deleteFullJsonArray([{},{},{}]),返回去重后的数据             |
+| debound             | 防抖函数                      | debound(事件方法，**[防抖时长默认300ms，可选]**)，`参考示例代码防抖` |
+| throttle            | 节流函数                      | throttle(事件方法，**[节流时长默认1000ms，可选]**)           |
+| imgToBase64         | 图片转base64                  | imgToBase64(文件流).then(res=>{    //res为base64图   })      |
 
 
 
 #### axios请求类
 
-* 暂无
+* 开发中
 
 #### 动画类
 
@@ -38,15 +44,13 @@ import * as jsStore2 from 'js-methods-store'; //推荐  功能增多时，将不
 
 | 方法名        | 用途                                                         | 用法                                                         |
 | ------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| formatterDate | （时间戳、日期）转化; yyyy年；mm月；dd日; hh小时;ii分；ss秒。 | formatterDate(时间，'yyyy/mm/dd hh:ii:ss'，是否需要补0默认true)  参考`示例代码A` |
-|               |                                                              |                                                              |
-|               |                                                              |                                                              |
+| formatterDate | （时间戳、日期）转化; yyyy年；mm月；dd日; hh小时;ii分；ss秒。 | formatterDate(时间，'yyyy/mm/dd hh:ii:ss'，是否需要补0默认true)  参考`示例代码日期格式化类` |
 
 
 
 ### 示例代码
 
-#### A
+#### 日期格式化类
 
 ```````js 
 /**
@@ -73,6 +77,17 @@ formatterDate(Date(),'yyyy%mm%dd hh+ii+ss')   //2022%07%15 17+03+40
 formatterDate(Date(),'yyyy年ss秒') //2022年20秒 
 ```````
 
+#### 防抖
+
+``````js
+document.querySelector("#debound-btn").onclick = ()=>{debound(deboundClick)};
+function deboundClick(){
+    setTimeout(()=>{
+        console.log('点击了')
+    },1000);
+}
+``````
+
 
 
 ### 其它
@@ -80,3 +95,4 @@ formatterDate(Date(),'yyyy年ss秒') //2022年20秒
 工作原因，刚刚开始总结封装，后续会慢慢增长功能中
 
 如果你有好的建议可以与我email->1045749725@qq.com
+

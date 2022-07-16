@@ -1,8 +1,9 @@
-import { requestGet } from '../methods/axios';
+import { axiostGet } from '../methods/axios';
 import { formatterDate } from '../methods/date';
-import { debound, throttle} from '../methods';
+import { debound, throttle,imgToBase64} from '../methods';
+
 document.querySelector("#requestAxiosBtn").onclick=async function(){
-     const result = await requestGet('https://shaoyuhong.cn/lx104.php',{page:100});
+     const result = await axiostGet('https://shaoyuhong.cn/lx104.php',{page:100});
      this.nextElementSibling.innerText = JSON.stringify(result.data);
 }
 
@@ -24,4 +25,13 @@ function throttleClick(){
     setTimeout(()=>{
         console.log('点击了')
     },1000);
+}
+
+document.querySelector("#base64").onclick=function(){
+    const file = document.querySelector("#image").files[0];
+    console.log(file);
+    imgToBase64(file).then(res=>{
+        console.log(res);
+
+    });
 }
