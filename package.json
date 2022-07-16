@@ -1,6 +1,6 @@
 {
   "name": "js-methods-store",
-  "version": "1.0.9",
+  "version": "1.0.12",
   "description": "",
   "main": "dist/main.js",
   "scripts": {
@@ -10,7 +10,13 @@
     "build:prod": "webpack --config webpack.config.js --env production --progress "
   },
   "keywords": [
-    "array"
+    "array",
+    "防抖",
+    "节流",
+    "图片转base64",
+    "axios",
+    "date",
+    "日期类转换"
   ],
   "author": "",
   "license": "ISC",
