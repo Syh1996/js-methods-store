@@ -6,7 +6,7 @@
 ### 安装
 
 ``````
-npm i js-methods-store
+npm i js-methods-store -S
 ``````
 
 ### 使用
@@ -35,7 +35,11 @@ import * as jsStore from 'js-methods-store'; //推荐
 
 #### axios请求类
 
-* 开发中
+| 方法名                 | 用途                                            | 用法                                                         |
+| ---------------------- | ----------------------------------------------- | ------------------------------------------------------------ |
+| createAxiosCancelToken | 生成`CancelToken` 的构造函数来创建 cancel token | createAxiosCancelToken（）直接调用，无需任何参数             |
+| axiostGet              | axios get请求                                   | axiostGet(**url,data,[可选存放取消请求函数],[可选CancelToken]**)详见示例代码  axios请求 |
+| axiosPost              | axios  post请求                                 | axiosPost(**url,data,[可选存放取消请求函数],[可选CancelToken]**)详见示例代码  axios请求 |
 
 #### 动画类
 
@@ -45,7 +49,7 @@ import * as jsStore from 'js-methods-store'; //推荐
 
 | 方法名        | 用途                                                         | 用法                                                         |
 | ------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| formatterDate | （时间戳、日期）转化; yyyy年；mm月；dd日; hh小时;ii分；ss秒。 | formatterDate(时间，'yyyy/mm/dd hh:ii:ss'，是否需要补0默认true)  参考`示例代码日期格式化类` |
+| formatterDate | （时间戳、日期）转化; yyyy年；mm月；dd日; hh小时;ii分；ss秒。 | formatterDate(时间/字符串日期格式/时间戳/日期，'yyyy/mm/dd hh:ii:ss'，是否需要补0默认true)  参考`示例代码日期格式化类` |
 
 
 
@@ -105,6 +109,58 @@ function deboundClick(){
 import {checkFileIsPhoto} from 'js-methods-store';
 const file = document.querySelector("#file").files[0];
 checkFileIsPhoto(file) //返回true 或者  false
+``````
+
+#### axios请求封装
+
+``````js
+/**
+  原生js写法
+**/
+var cancelToken = '';
+var getToken = createAxiosCancelToken();
+document.querySelector("#requestAxiosBtn").onclick = async function () {
+    if (window.cancelToken) {
+        window.cancelToken();
+    }
+    const result = await axiostGet.call(
+        window,
+        'https://shaoyuhong.cn/lx104.php',
+        { page: 100 },
+        'cancelToken',
+        getToken
+    );
+    this.nextElementSibling.innerText = JSON.stringify(result.data);
+}
+/**
+  vue写法
+**/
+import { createAxiosCancelToken,axiosGet,axiosPost } from 'js-methods-store';
+new Vue({
+     data(){
+         cancelToken:null,
+         getToken:''
+     },
+    created(){
+      this.getToken = createAxiosCancelToken();
+      this.getData();  
+    },
+    methods:{
+        async getData(){
+            if (this.cancelToken) {
+       			 this.cancelToken();
+   				 }
+   			 const result = await axiostGet.call(
+    		    this, 								//修改this指针
+      		   'https://shaoyuhong.cn/lx104.php',   //url
+      		   { page: 100 },						// 请求参数  get与post都为一个对象
+        	   'cancelToken',						// 取消token的存放函数
+       		    getToken							// 创建取消token的函数
+   			 );
+    		
+        }
+    }
+})
 ``````
 
 
