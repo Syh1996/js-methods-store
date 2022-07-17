@@ -81,3 +81,18 @@ export const imgToBase64 = file => {
         throw ('file不是图片')
     }
 }
+
+
+/**
+ *  验证图片类型
+ */
+ export const checkFileIsPhoto = file => {
+    if (!file) {
+        throw ('请选择图片')
+    }
+    const { name } = file;
+    const extIndex = name.lastIndexOf('.');
+    const extName = name.substring(extIndex + 1);
+    const exts = ['jpg', 'png', 'gif', 'jpeg', 'bmp'];
+    return exts.includes(extName.toLowerCase());
+}

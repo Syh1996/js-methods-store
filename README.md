@@ -28,7 +28,8 @@ import * as jsStore from 'js-methods-store'; //推荐
 | deleteFullJsonArray | 对数组去重，主要针对jsonArray | deleteFullJsonArray([{},{},{}]),返回去重后的数据             |
 | debound             | 防抖函数                      | debound(事件方法，**[防抖时长默认300ms，可选]**)，`参考示例代码防抖` |
 | throttle            | 节流函数                      | throttle(事件方法，**[节流时长默认1000ms，可选]**)           |
-| imgToBase64         | 图片转base64                  | imgToBase64(文件流).then(res=>{    //res为base64图   })      |
+| imgToBase64         | 图片转base64                  | imgToBase64(**File**).then(res=>{    //res为base64图   })    |
+| checkFileIsPhoto    | 验证是否为图片                | checkFileIsPhoto(**File**)  // true=>是图片；false=>不是图片       `参考示例代码  验证是否为图片` |
 
 
 
@@ -53,6 +54,16 @@ import * as jsStore from 'js-methods-store'; //推荐
 #### 日期格式化类
 
 ```````js 
+/**
+  传入时间戳
+**/
+formatterDate(15050884880,'yyyy年mm月dd hh小时ii分ss秒',true); //2022年07月15 17小时02分06秒
+
+/**
+  传入字符串日期
+**/
+formatterDate('2022/02/22 10:00:00','yyyy年mm月dd hh小时ii分ss秒',true); //2022年07月15 17小时02分06秒
+
 /**
   标准日期
 **/
@@ -86,6 +97,14 @@ function deboundClick(){
         console.log('点击了')
     },1000);
 }
+``````
+
+#### 验证是否为图片
+
+``````js
+import {checkFileIsPhoto} from 'js-methods-store';
+const file = document.querySelector("#file").files[0];
+checkFileIsPhoto(file) //返回true 或者  false
 ``````
 
 
