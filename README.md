@@ -30,6 +30,7 @@ import * as jsStore from 'js-methods-store'; //推荐
 | throttle            | 节流函数                      | throttle(事件方法，**[节流时长默认1000ms，可选]**)           |
 | imgToBase64         | 图片转base64                  | imgToBase64(**File**).then(res=>{    //res为base64图   })    |
 | checkFileIsPhoto    | 验证是否为图片                | checkFileIsPhoto(**File**)  // true=>是图片；false=>不是图片       `参考示例代码  验证是否为图片` |
+| urlGetArgs          | 获取url参数                   | urlGetArgs(url字符串) //传入url字符 ，默认取当前浏览器url  `参考示例代码   urlGetArgs` |
 
 
 
@@ -37,9 +38,13 @@ import * as jsStore from 'js-methods-store'; //推荐
 
 | 方法名                 | 用途                                            | 用法                                                         |
 | ---------------------- | ----------------------------------------------- | ------------------------------------------------------------ |
+| axoisSetConfig         | axios请求配置  如baseURl,token...               | 详见示例代码  `axoisSetConfig请求配置`  建议写至app.vue/app.jsx入口文件一次性配置 |
 | createAxiosCancelToken | 生成`CancelToken` 的构造函数来创建 cancel token | createAxiosCancelToken（）直接调用，无需任何参数             |
-| axiostGet              | axios get请求                                   | axiostGet(**url,data,[可选存放取消请求函数],[可选CancelToken]**)详见示例代码  axios请求 |
-| axiosPost              | axios  post请求                                 | axiosPost(**url,data,[可选存放取消请求函数],[可选CancelToken]**)详见示例代码  axios请求 |
+| axiostGet              | axios get请求                                   | axiostGet(**url,data,[可选存放取消请求函数],[可选CancelToken]**)`详见示例代码  axios请求` |
+| axiosPost              | axios  post请求                                 | axiosPost(**url,data,[可选存放取消请求函数],[可选CancelToken]**)`详见示例代码  axios请求` |
+| 响应数据拦截           |                                                 | 如请求需要响应数据拦截可配置**window.axoisResponse = (res)=>{} **，请求成功后将自动调用该函数。你也可以不配置，默认将不需要响应数据拦截 |
+
+> tips: 默认不使用取消请求功能，axiosGet(url,data);      如需要使用，需要调用axiostGet.call(this，...）,修改this指针
 
 #### 动画类
 
@@ -50,6 +55,32 @@ import * as jsStore from 'js-methods-store'; //推荐
 | 方法名        | 用途                                                         | 用法                                                         |
 | ------------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | formatterDate | （时间戳、日期）转化; yyyy年；mm月；dd日; hh小时;ii分；ss秒。 | formatterDate(时间/字符串日期格式/时间戳/日期，'yyyy/mm/dd hh:ii:ss'，是否需要补0默认true)  参考`示例代码日期格式化类` |
+
+#### 内置正则
+
+| 变量名 | 说明            |
+| ------ | --------------- |
+| zhReg  | 匹配汉字1到多个 |
+| engAndNumberReg  | 英文或者数字1到多个 |
+| emailReg  | email邮箱 |
+| telReg  | 手机号 |
+| idReg  | 身份证 |
+| blankReg  | 银行号 |
+| creditCode  | 统一社会信用代码 |
+| money  | 金额 允许负数 |
+
+使用方法
+
+``````js
+import { emailReg } from 'js-methods-store';
+const email = 'emailReg@qq.com'; 
+if(emailReg.test(email)){
+    //true
+}else{
+    //false
+}
+
+``````
 
 
 
@@ -110,6 +141,59 @@ import {checkFileIsPhoto} from 'js-methods-store';
 const file = document.querySelector("#file").files[0];
 checkFileIsPhoto(file) //返回true 或者  false
 ``````
+
+#### urlGetArgs
+
+``````js
+//传入字符串
+urlGetArgs('http://www.baidu.com?name=xiaoming&age=22') 
+/**
+  结果 {
+  	  name:'xiaoming',
+  	  age：'22'
+    }
+**/
+
+//默认空，取当前浏览器url,如'http://www.baidu.com?name=xiaoming&age=22'
+urlGetArgs()
+/**
+  结果 {
+  	  name:'xiaoming',
+  	  age：'22'
+    }
+ **/
+``````
+
+
+
+#### axoisSetConfig请求配置
+
+``````js
+ const config = {
+       baseURL:'https://baidu.cn/',
+       headers:{
+        common:{
+            Authorization:'shaoyuhong_token',
+            copyRight:'2022'
+        }
+       },
+       post:{
+           'Content-Type':'application/x-www-form-urlencoded'
+       }
+   }
+axoisSetConfig(config) //配置请求头部
+/* 以下为请求*/
+document.querySelector("#requestAxiosBtn").onclick = async function () {
+    const result = await axiostGet(
+        'lx104.php',
+        { page: 100 },
+    );
+    this.nextElementSibling.innerText = JSON.stringify(result.data);
+}
+
+``````
+
+
 
 #### axios请求封装
 

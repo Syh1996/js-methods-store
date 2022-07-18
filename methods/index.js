@@ -86,7 +86,7 @@ export const imgToBase64 = file => {
 /**
  *  验证图片类型
  */
- export const checkFileIsPhoto = file => {
+export const checkFileIsPhoto = file => {
     if (!file) {
         throw ('请选择图片')
     }
@@ -95,4 +95,30 @@ export const imgToBase64 = file => {
     const extName = name.substring(extIndex + 1);
     const exts = ['jpg', 'png', 'gif', 'jpeg', 'bmp'];
     return exts.includes(extName.toLowerCase());
+}
+
+/**
+ * url获取参数
+ * ?name=baidu&age=22&address=北京
+ */
+export const urlGetArgs = (urlString = window.location.href) => {
+    const hasHttp = /^http(s?)/;
+    if(!hasHttp.test(urlString)){
+        urlString = 'http:'+urlString;
+    }
+    const url = new URL(urlString);
+    const search = url.search ? url.search.substring(1,) : '';
+    if (search) {
+        const vars = search.split('&');
+        const result = vars.reduce((opt, cur) => {
+            const arr = cur.split('=');
+            const key = arr[0];
+            const value = decodeURIComponent(arr[1]);
+            opt[key] = value;
+            return opt;
+        }, {});
+        return result;
+    } else {
+        return {}
+    }
 }
