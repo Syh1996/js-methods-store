@@ -1,6 +1,6 @@
 {
   "name": "js-methods-store",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "",
   "main": "dist/main.js",
   "scripts": {
@@ -16,7 +16,9 @@
     "图片转base64",
     "axios",
     "date",
-    "日期类转换"
+    "日期类转换",
+    "常用正则",
+    "url参数"
   ],
   "author": "",
   "license": "ISC",
