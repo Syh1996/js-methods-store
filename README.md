@@ -28,9 +28,11 @@ import * as jsStore from 'js-methods-store'; //推荐
 | deleteFullJsonArray | 对数组去重，主要针对jsonArray | deleteFullJsonArray([{},{},{}]),返回去重后的数据             |
 | debound             | 防抖函数                      | debound(事件方法，**[防抖时长默认300ms，可选]**)，`参考示例代码防抖` |
 | throttle            | 节流函数                      | throttle(事件方法，**[节流时长默认1000ms，可选]**)           |
-| imgToBase64         | 图片转base64                  | imgToBase64(**File**).then(res=>{    //res为base64图   })    |
+| imgToBase64         | 图片转base64                  | imgToBase64(**File**).then(res=>{    //res为base64图对象   }) |
 | checkFileIsPhoto    | 验证是否为图片                | checkFileIsPhoto(**File**)  // true=>是图片；false=>不是图片       `参考示例代码  验证是否为图片` |
 | urlGetArgs          | 获取url参数                   | urlGetArgs(url字符串) //传入url字符 ，默认取当前浏览器url  `参考示例代码   urlGetArgs` |
+| miniPhoto           | canvas压缩图片                | miniPhoto({File：inputFile,width:压缩到多少px宽度,height：压缩到多少PX高度})   `参考示例代码 压缩图片`<br>我们不建议width,height共同配置，两者只配置一个时，会根据原来比例自动缩放 |
+| copyText            | 复制文字到剪切板              | copyText({resourceObject:复制的dom元素内容,resourceText:复制的文字})<br>resourceObject与resourceText同时存在时，将优先使用resourceText中的文字作为复制的内容<br>正常情况下，两个配置只存在于一个<br>详细参考示例代码复制文字 |
 
 
 
@@ -245,6 +247,61 @@ new Vue({
         }
     }
 })
+``````
+
+
+
+#### canvas压缩图片
+
+``````html
+<body>
+      <section class="pic">
+        <input type="file" accept=".png,.jpeg,.jpg,.gif" id="file">
+        <button id="miniPic">压缩图片</button>
+    </section>
+</body>
+<script>
+import { miniPhoto } from 'js-methods-store';
+document.querySelector("#miniPic").onclick = function () {
+    const file = document.querySelector("#file").files[0];
+    miniPhoto({
+        file:file,
+        width:100, //压缩到100px的宽度，我们不建议width,height共同配置，会根据原来比例自动缩放
+        height:100 //压缩到100px的高度, 我们不建议width,height共同配置，会根据原来比例自动缩放
+    }).then(res=>{
+        const img = document.createElement('img');
+        img.src = res;
+        this.parentElement.appendChild(img)
+    })
+ }
+ </script>
+``````
+
+
+
+#### 复制文字
+
+``````html
+    <section>
+        <h3>复制文字</h3>
+        <div class="box">
+            <input type="text">
+            <p>这是一个准备被复制的文字</p>
+            <button id="copy">复制</button>
+        </div>
+    </section>
+   <script>
+		document.querySelector("#copy").onclick = function () {
+   				 copyText({resourceObject:this.previousElementSibling}).then(res=>{
+       			 console.log(res);//已复制成功，此外仅是一个回调，方便后续自定义提示信息  如element-ui  this.$message({})
+         })
+     }
+       document.querySelector("#copy").onclick = function () {
+   				 copyText({resourceText:'好的'}).then(res=>{
+       			 console.log(res);//已复制成功，此外仅是一个回调，方便后续自定义提示信息  如element-ui  this.$message({})
+         })
+     }
+   </script>
 ``````
 
 

@@ -26,7 +26,7 @@ const getFormatDateResult = (format,replaceValue)=>{
  * @param {string} format  //格式
  * @param {boolean} isFull  //是否自动补0
  */
-export const formatterDate = (time, format = 'yyyy-mm-dd hh:ii:ss', isFull = true) => {
+export const formatterDate = (time =new Date(), format = 'yyyy-mm-dd hh:ii:ss', isFull = true) => {
     if (!time) {
         return '';
     }

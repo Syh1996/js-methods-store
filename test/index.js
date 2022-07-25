@@ -1,6 +1,6 @@
 import { axiostGet, createAxiosCancelToken ,axoisSetConfig} from '../methods/axios';
 import { formatterDate } from '../methods/date';
-import { debound, throttle, imgToBase64, urlGetArgs } from '../methods';
+import { debound, throttle, imgToBase64, urlGetArgs,copyText,miniPhoto } from '../methods';
 
 var cancelToken = '';
 var getToken = createAxiosCancelToken();
@@ -86,3 +86,29 @@ document.querySelector("#base64").onclick = function () {
 document.querySelector("#geturl").onclick = function () {
    console.log( urlGetArgs('www.baidu.com?name=baidu&age=22&address=北京'))
 }
+
+document.querySelector("#copy").onclick = function () {
+     console.log(this);
+    copyText({resourceObject:this.previousElementSibling,resourceText:'好的经'}).then(res=>{
+        console.log(res);
+    })
+ }
+ 
+
+ document.querySelector("#goTop").onclick = function () {
+    
+    document.querySelector(".scroll").scrollTop = 0;
+ }
+
+ document.querySelector("#miniPic").onclick = function () {
+    const file = this.previousElementSibling.files[0];
+    miniPhoto({
+        file:file,
+        width:100,
+        height:100
+    }).then(res=>{
+        const img = document.createElement('img');
+        img.src = res;
+        this.parentElement.appendChild(img)
+    })
+ }

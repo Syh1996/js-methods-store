@@ -74,7 +74,16 @@ export const imgToBase64 = file => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = function () {
-                resolve(this.result);
+                const that = this;
+                const createImg = document.createElement('img');
+                createImg.src = this.result;
+                createImg.onload = function () {
+                    resolve({
+                        data: that.result,
+                        width: this.width,
+                        height: this.height
+                    });
+                }
             }
         });
     } else {
@@ -103,8 +112,8 @@ export const checkFileIsPhoto = file => {
  */
 export const urlGetArgs = (urlString = window.location.href) => {
     const hasHttp = /^http(s?)/;
-    if(!hasHttp.test(urlString)){
-        urlString = 'http:'+urlString;
+    if (!hasHttp.test(urlString)) {
+        urlString = 'http:' + urlString;
     }
     const url = new URL(urlString);
     const search = url.search ? url.search.substring(1,) : '';
@@ -122,3 +131,71 @@ export const urlGetArgs = (urlString = window.location.href) => {
         return {}
     }
 }
+
+/**
+ * @param {Element} copyObject
+ * 复制文字
+ */
+export const copyText = ({ resourceObject, resourceText }) => {
+    return new Promise((resolve) => {
+        let textVal = resourceText;
+        if (!resourceText) {
+            const tagName = resourceObject.tagName.toLowerCase();
+            if (['input', 'textarea'].includes(tagName)) {
+                textVal = resourceObject.value;
+            } else {
+                textVal = resourceObject.innerText;
+            }
+        }
+        const createInput = document.createElement('input');
+        createInput.value = textVal;
+        createInput.id = 'copyTextDom';
+        document.body.appendChild(createInput);
+        document.querySelector("#copyTextDom").select(); // 使用js去通过id找到并执行input实体的全部选中
+        document.execCommand("Copy"); //原生copy方法执行浏览器复制命令
+        document.querySelector("#copyTextDom").remove();
+        resolve({
+            text: textVal
+        })
+    });
+}
+
+
+/**
+ * 
+ * @param {object} param0 
+ */
+export const miniPhoto = ({ file, width, height }) => {
+    return new Promise((resolve, reject) => {
+        imgToBase64(file).then(res => {
+            const { width: rawWidth, height: rawHeight, data } = res;
+            const createCanvas = document.createElement('canvas');
+            let curWidth = 0, curHeight = 0;
+            if (width && !height) {
+                const scaleWidth = width / rawWidth;
+                curWidth = width;
+                curHeight = Math.floor(rawHeight * scaleWidth);
+            }
+            if (height && !width) {
+                const scaleHeight = height / rawHeight;
+                curHeight = height;
+                width = Math.floor(rawWidth * scaleHeight)
+            }
+            if (width && height) {
+                //计算缩放比
+                curWidth = width;
+                curHeight = height;
+            }
+            createCanvas.width = curWidth;
+            createCanvas.height = curHeight;
+            const ctx = createCanvas.getContext("2d");
+            const img = document.createElement('img');
+            createCanvas.id = 's-canvas';
+            img.src = data;
+            img.onload = function () {
+                ctx.drawImage(this, 0, 0, curWidth, curHeight);
+                resolve(createCanvas.toDataURL());
+            }
+        })
+    });
+} 
